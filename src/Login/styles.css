@@ -1,0 +1,75 @@
+.main-div {
+  width: 100vw;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.login-div {
+  border-radius: 10px;
+  margin: 20px;
+  background-image: radial-gradient(100% 100% at 100% 0, #d90fe6 0, #2270d4 100%);
+
+  width: 380px;
+  height: 450px;
+}
+
+.login-div h1 {
+  color: #fff;
+  margin-top: 20px;
+}
+
+.login-div input {
+  width: 80%;
+  /* margin-top: 20px; */
+  height: 50px;
+  padding: 0 0 0 10px;
+  /* background-color: black; */
+  display: block;
+  margin: 40px auto;
+  border: 1px solid #c2c0ca;
+  border-radius: 10px;
+}
+.login-div button{
+    width: 80%;
+    border: 0;
+    font-weight: bold;
+    color: #fff;
+    font-family: 'Rammetto One', cursive;
+    font-size: 1rem;
+    box-shadow: rgba(45, 35, 66, .4) 0 2px 4px,rgba(45, 35, 66, .3) 0 7px 13px -3px,rgba(58, 65, 111, .5) 0 -3px 0 inset;
+    cursor: pointer;
+    background-image: radial-gradient(100% 100% at 100% 0, #e65e0f 0, #d42e22 100%);
+    border-radius: 10px;
+    height: 50px;
+
+}
+
+.login-div p{
+    font-size: 0.7rem;
+    margin: 15px;
+    color: #fff;
+}
+.login-div p a{
+    font-size: 0.7rem;
+    margin: 5px;
+    /* color: #fff;s */
+    color: #f5a405;
+
+    /* animation: effect 2s linear infinite; */
+}
+
+ 
+/* @keyframes effect {
+    0% {
+        background: linear-gradient(
+            #020100, #ed0e0e);
+        -webkit-background-clip: text;
+    }
+
+    100% {
+        background: linear-gradient(
+            #eb0808, #000000);
+        -webkit-background-clip: text;
+    }
+} */
