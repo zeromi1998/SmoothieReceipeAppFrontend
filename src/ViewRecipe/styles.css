@@ -1,0 +1,69 @@
+.main-recipe {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  font-size: 0.9rem;
+}
+/* .card-recipe {
+    width: 100%;
+    /* justify-content: center;
+    margin: 30px;
+    display: flex;
+    flex-direction: row; */
+
+
+.card-recipe h1{
+    text-align: center;
+    font-size: 2.5rem;
+    color: #474747;
+    font-family: 'Poppins', sans-serif;
+}
+
+.card-recipe img{
+    border-radius: 30%;
+    width: 55%;
+    height: 400px;
+    margin-top: 20px;
+    object-fit: scale-down;
+}
+.summary-card{
+    font-family: 'circular';
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    padding: 10px;
+}
+
+
+.card-one{
+    margin: 0 40px;
+    text-align: start;
+    color:#474747; ;
+}
+
+.card-one p{
+    font-size: 1rem;
+    margin: 20px 0;
+}
+
+.card-two p{
+    margin: 5px 10px;
+}
+
+.card-two li{
+    align-items: center;
+    display: flex;
+    list-style: none;
+    font-size: 1.2rem;
+    color: rgb(26, 23, 23);
+}
+
+.check-box {
+    height: 25px;
+    width: 25px;
+    accent-color: #069906;;
+}
+
+.card-two{
+
+    text-align: start;
+}

@@ -1,6 +1,7 @@
 import React from "react";
 import "./styles.css";
 import smoothie from "../assets/smoothie.jpg";
+import { Link } from "react-router-dom";
 const Home = () => {
   return (
     <>
@@ -13,7 +14,7 @@ const Home = () => {
           <h1>Smoothie Recipes</h1>
 
           
-          <button className="button-29" role="button">View Recipes</button>
+          <Link to="/smoothies" className="button-29" role="button">View Recipes</Link>
         </div>
       </div>
     </>
