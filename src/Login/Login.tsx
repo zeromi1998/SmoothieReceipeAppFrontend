@@ -1,5 +1,6 @@
 import react, { useState } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 import "./styles.css";
 
@@ -24,28 +25,45 @@ const Login = () => {
     });
   };
 
+  const submitLoginData = async (e: any) => {
+    let loginData = {
+      email: userData.email,
+      password: userData.password,
+    };
+    e.preventDefault();
+    // console.log("this is login data", loginData);
+    const res = await axios.post("http://localhost:3000/login", loginData);
+
+    localStorage.setItem("userData",JSON.stringify(res.data))
+    console.log("this is log response", res);
+
+
+  };
+
   return (
     <>
       <div className="main-div">
         <div className="login-div">
           <h1>Login</h1>
-          <input
-            onChange={handleChange}
-            type="email"
-            placeholder="Email"
-            name="email"
-            value={userData.email}
-            required
-          />
-          <input
-            type="password"
-            onChange={handleChange}
-            placeholder="Password"
-            name="password"
-            value={userData.password}
-            required
-          />
-          <button type="submit">Sign In</button>
+          <form onSubmit={submitLoginData}>
+            <input
+              onChange={handleChange}
+              type="email"
+              placeholder="Email"
+              name="email"
+              value={userData.email}
+              required
+            />
+            <input
+              type="password"
+              onChange={handleChange}
+              placeholder="Password"
+              name="password"
+              value={userData.password}
+              required
+            />
+            <button type="submit">Sign In</button>
+          </form>
           <p>
             Don't have Account?<Link to="/signup">Create Account</Link>
           </p>
