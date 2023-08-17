@@ -5,6 +5,11 @@
     flex-wrap: wrap;
     justify-content: center;
   }
+
+  .tick-img {
+    width: 50px;
+    padding: 20px 0;
+  }
   .signup-div {
     border-radius: 10px;
     margin: 20px;
@@ -12,7 +17,7 @@
 
 
     width: 380px;
-    height: 500px;
+    height: auto;
   }
   
   .signup-div h1 {
@@ -76,3 +81,15 @@
           -webkit-background-clip: text;
       }
   } */
+
+
+  .popup{
+    height: 60px;
+    background-color: #26a526;
+    border-radius: 20px;
+  }
+  .popup p{
+    padding: 10px;
+    font-size: 1.5rem;
+    color: #fff;
+  }

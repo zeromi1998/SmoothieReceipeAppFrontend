@@ -1,0 +1,9 @@
+.Loader-class{
+    height: 35vw;
+
+    display: flex;
+    place-content: center;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}

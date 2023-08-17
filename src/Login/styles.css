@@ -11,7 +11,7 @@
   background-image: radial-gradient(100% 100% at 100% 0, #d90fe6 0, #2270d4 100%);
 
   width: 380px;
-  height: 450px;
+  height: auto;
 }
 
 .login-div h1 {
@@ -74,3 +74,19 @@
         -webkit-background-clip: text;
     }
 } */
+
+
+.alert {
+  margin: 0 20px;
+  width : 90%;
+  height: 40px;
+}
+
+.alert-error{
+  font-size: 0.7rem;
+  font-family: monospace;
+  color: #df0a1e;
+  width: 90%;
+  margin: 20px;
+  background: white;
+}

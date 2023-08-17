@@ -1,16 +1,17 @@
 import "./styles.css";
-import { Link } from "react-router-dom";
 import axios from "axios";
 import MyRecipeCard from "../Components/myRecipe-card";
-import mango from "../assets/Mango.jpg";
 import { useEffect, useState } from "react";
+import LoaderComponent from "../Components/Loader-component";
 
 const ViewSmoothie = () => {
   const [smoothies, setSmoothies] = useState([]);
 
+  const [loader, setLoader] = useState(false);
   useEffect(() => {
     const controller = new AbortController();
     const getSmoothies = async () => {
+      setLoader(true);
       const userData = JSON.parse(localStorage.getItem("userData")!);
 
       const headers = {
@@ -21,6 +22,9 @@ const ViewSmoothie = () => {
       const smoothiesData = await axios.get("http://localhost:3000/smoothies", {
         headers,
       });
+      if (smoothiesData) {
+        setLoader(false);
+      }
       setSmoothies(smoothiesData.data);
       console.log("this is smothes data", smoothiesData.data);
       return () => controller.abort();
@@ -30,15 +34,24 @@ const ViewSmoothie = () => {
 
   return (
     <>
-    <MyRecipeCard recipeData ={smoothies}/>
-
+      {loader ? (
+        <LoaderComponent />
+      ) : (
+        <div className="main-view">
+          {smoothies.length > 0 ? (
+            <MyRecipeCard recipeData={smoothies} />
+          ) : (
+            <div>
+              <h3> No Recipe Found !. Please Create New Recipe </h3>
+            </div>
+          )}
+        </div>
+      )}
     </>
   );
 };
 
 export default ViewSmoothie;
-
-
 
 // {/* <div className="main-block">
 // {/* <h1>Smoothies</h1> */}

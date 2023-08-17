@@ -1,19 +1,19 @@
-import mango from "../assets/Mango.jpg";
 import "./styles.css";
 import { Link } from "react-router-dom";
-import { FaEdit } from "react-icons/fa";
 import axios from "axios";
-import { AiFillDelete } from "react-icons/ai";
 import { useEffect, useState } from "react";
 import MyRecipeCard from "../Components/myRecipe-card";
+import LoaderComponent from "../Components/Loader-component";
+
 const MyRecipes = () => {
   const [myRecipe, setMyRecipe] = useState([]);
-
+  const [loader, setLoader] = useState(false);
   useEffect(() => {
     getMyRecipes();
   }, []);
 
   const getMyRecipes = async () => {
+    setLoader(true);
     const userData = JSON.parse(localStorage.getItem("userData")!);
 
     const headers = {
@@ -24,15 +24,35 @@ const MyRecipes = () => {
     const res = await axios.get("http://localhost:3000/smoothie", {
       headers,
     });
-    setMyRecipe(res.data);
-    console.log("this is my recipes data", res);
+    if (res) {
+      setLoader(false);
+      setMyRecipe(res.data);
+    }
   };
+
   return (
     <>
       <div className="createRecipe">
         <Link to="/createRecipe">Create New Recipe</Link>
       </div>
-      <MyRecipeCard recipeData={myRecipe} flag={true}/>
+      {loader ? (
+        <LoaderComponent />
+      ) : (
+        <>
+          {myRecipe.length > 0 ? (
+            <MyRecipeCard
+              recipeData={myRecipe}
+              getSmoothie={getMyRecipes}
+              flag={true}
+            />
+          ) : (
+            <div>
+              <h3>No Recipe Found !. Please Create New Recipe </h3>
+            </div>
+          )}
+        </>
+      )}
+
       {/* <div className="myRecipes">
         {myRecipe.map((data:any) => {
           return (

@@ -3,18 +3,38 @@ import "./styles.css";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import axios from "axios";
-
+import { Link, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import LoaderComponentForImg from "../Components/LoaderComponentForImg";
+import sample from "../assets/sample.jpg";
 interface userSmoothiedata {
   name: string;
-  ingredient: string;
+  ingredients: string;
 }
 const CreateRecipe = () => {
-  const [smoothieImg, setSmoothieImg] = useState<any>();
-  const [smoothieData, setSmoothieData] = useState<userSmoothiedata>({
-    name: "",
-    ingredient: "",
-  });
-  const [desc, setDesc] = useState("");
+  const [loader, setLoader] = useState(false);
+
+  const location = useLocation();
+  const navigate = useNavigate();
+  const [errorDesc, setErrorDesc] = useState("");
+  const propsData = location.state;
+
+  console.log("this is propsData", propsData);
+  const [smoothieImg, setSmoothieImg] = useState<any>(
+    propsData ? propsData.smoothieImg : ""
+  );
+  const [smoothieData, setSmoothieData] = useState<userSmoothiedata>(
+    propsData
+      ? {
+          name: propsData.name,
+          ingredients: propsData.ingredients,
+        }
+      : {
+          name: "",
+          ingredients: "",
+        }
+  );
+  const [desc, setDesc] = useState(propsData ? propsData.description : "");
 
   const handleDescChange = (data: string) => {
     setDesc(data);
@@ -31,65 +51,145 @@ const CreateRecipe = () => {
   };
 
   const onSubmitFormData = async (e: any) => {
+    // const formData = new FormData();
+    // formData.append("smoothieImg", smoothieImg);
+    // console.log("this is smoothie Img",smoothieImg,...formData,formData)
+
     const userData = JSON.parse(localStorage.getItem("userData")!);
     e.preventDefault();
 
     const headers = {
-      'content-type': 'application/json',
-      authorization:`Bearer ${userData.token}`
-    }
+      "content-type": "application/json",
+      authorization: `Bearer ${userData.token}`,
+    };
 
     const data = {
       smoothieImg: smoothieImg,
       name: smoothieData.name,
-      ingredients: smoothieData.ingredient,
+      ingredients: smoothieData.ingredients,
       description: desc,
       author: {
         name: userData.name,
         userId: userData.user,
       },
     };
-    const res = await axios.post("http://localhost:3000/smoothie", data,{headers});
+    let res;
+    if (propsData) {
+      try {
+        res = await axios.patch(
+          `http://localhost:3000/smoothie/${propsData._id}`,
+          data,
+          {
+            headers,
+          }
+        );
+        navigate("/myRecipes");
+      } catch (error) {
+        console.log("this is edit recipe error  ", error);
+      }
+    } else {
+      if (desc) {
+        try {
+          res = await axios.post("http://localhost:3000/smoothie", data, {
+            headers,
+          });
+          navigate("/myRecipes");
+        } catch (error) {
+          console.log("this is create recipe error  ", error);
+        }
+      } else {
+        setErrorDesc("Please add Recipe Steps");
+      }
+    }
 
     console.log("this is form data", res);
   };
 
-  const uploadImg = (e: any) => {
-    let reader = new FileReader();
+  const uploadImg = async (e: any) => {
+    let res;
+    const formData = new FormData();
+    setLoader(true);
+    formData.append("file", e.target.files[0]);
+    formData.append("upload_preset", "smoothieImg");
+    formData.append("cloud_name", "ddhlxd7eq");
 
-    reader.readAsDataURL(e.target.files[0]);
-    reader.onload = () => {
-      console.log("this is reader res", reader.result);
-      setSmoothieImg(reader.result);
-    };
-    reader.onerror = (err) => {
-      // TO DO  - need to handle error
-      console.log("this is error", err);
-    };
+    try {
+      res = await axios.post(
+        "https://api.cloudinary.com/v1_1/ddhlxd7eq/image/upload",
+        formData
+      );
+
+      console.log("this is console from cloudiry ", res.data.secure_url);
+      setSmoothieImg(res.data.secure_url);
+      setLoader(false);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
     <>
       <div>
         <form className="recipe-form" onSubmit={onSubmitFormData}>
-          <h1>Create new Recipe</h1>
-
-          <input type="file" onChange={uploadImg} name="img" accept="image/*" />
+          {propsData ? <h1>Edit Recipe</h1> : <h1>Create new Recipe</h1>}
+          <div>
+            <label htmlFor="upload-button">
+              {loader ? (
+                <>
+                  <LoaderComponentForImg />{" "}
+                </>
+              ) : smoothieImg ? (
+                <>
+                  <img
+                    src={smoothieImg}
+                    alt="dummy"
+                    className="upload-preview"
+                  />
+                  {propsData ? (
+                    <h5 className="text-center">Edit Smoothie photo</h5>
+                  ) : (
+                    <h5 className="text-center">Upload Smoothie photo</h5>
+                  )}
+                </>
+              ) : (
+                <>
+                  <span className="fa-stack fa-2x mt-3 mb-2">
+                    <img
+                      src={sample}
+                      className="upload-preview"
+                      alt="default-image"
+                    />
+                  </span>
+                  <h5 className="text-center">Upload Smoothie photo</h5>
+                </>
+              )}
+            </label>
+            <input
+              type="file"
+              onChange={uploadImg}
+              name="img"
+              id="upload-button"
+              accept="image/*"
+              style={{ display: "none" }}
+            />
+          </div>
           <input
             type="text"
             name="name"
             value={smoothieData.name}
             placeholder="recipe name"
             onChange={handleChange}
+            required
           />
 
           <input
             type="text"
             multiple
-            value={smoothieData.ingredient}
-            name="ingredient"
-            placeholder="ingredient"
+            value={smoothieData.ingredients}
+            name="ingredients"
+            placeholder="ingredients"
             onChange={handleChange}
+            required
           />
 
           {/* <input type="text" name="steps"  placeholder="Enter the steps" /> */}
@@ -99,7 +199,10 @@ const CreateRecipe = () => {
             value={desc}
             onChange={handleDescChange}
           />
-          <button type="submit">Create</button>
+          {errorDesc ? <h4 className="alert-error">{errorDesc}</h4> : ""}
+          <button type="submit">
+            {propsData ? "Edit Recipe" : "Create Recipe"}
+          </button>
         </form>
       </div>
     </>
