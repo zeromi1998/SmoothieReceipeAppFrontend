@@ -1,10 +1,6 @@
-import React from "react";
 import "./styles.css";
-import smoothie from "../assets/smoothie.jpg";
-import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import Carousel from "nuka-carousel";
-import { prodUrl } from "../constant";
 const Home = () => {
   const navigate = useNavigate();
   const userData = JSON.parse(localStorage.getItem("userData")!);
@@ -43,7 +39,7 @@ const Home = () => {
         wrapAround={true}
         pauseOnHover={false}
       >
-        {sliderImg.map((data, i) => {
+        {sliderImg.map((data) => {
           return (
             <div className="container">
               <img src={data} alt="Snow" />

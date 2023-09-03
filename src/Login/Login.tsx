@@ -1,4 +1,4 @@
-import react, { useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -12,7 +12,7 @@ interface userLoginData {
 }
 
 const Login = () => {
-  const [jwt, setJwt] = useLocalState("", "jwt");
+  const [_jwt, setJwt] = useLocalState("", "jwt");
   const navigate = useNavigate();
 
   const [error, setError] = useState({

@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import "./styles.css";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import axios from "axios";
-import { Link, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import LoaderComponentForImg from "../Components/LoaderComponentForImg";
 import sample from "../assets/sample.jpg";
@@ -70,12 +70,14 @@ const CreateRecipe = () => {
         userId: userData.user,
       },
     };
-    let res;
+    
     if (propsData) {
       try {
-        res = await axios.patch(`${prodUrl}/smoothie/${propsData._id}`, data, {
+      //  const res = 
+       await axios.patch(`${prodUrl}/smoothie/${propsData._id}`, data, {
           headers,
         });
+
         navigate("/myRecipes");
       } catch (error) {
         console.log("Edit Error ", error);
@@ -83,7 +85,8 @@ const CreateRecipe = () => {
     } else {
       if (desc) {
         try {
-          res = await axios.post(`${prodUrl}/smoothie`, data, {
+          // res = 
+          await axios.post(`${prodUrl}/smoothie`, data, {
             headers,
           });
           navigate("/myRecipes");

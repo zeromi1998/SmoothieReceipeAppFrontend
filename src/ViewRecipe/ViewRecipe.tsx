@@ -1,8 +1,6 @@
-import mango from "../assets/Mango.jpg";
 import "./styles.css";
-import { Link, useLocation } from "react-router-dom";
+import {useLocation } from "react-router-dom";
 import sample from "../assets/sample.jpg";
-import { prodUrl } from "../constant";
 
 const ViewRecipe = () => {
   const location = useLocation();

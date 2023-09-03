@@ -2,8 +2,6 @@ import {
   BrowserRouter as Router,
   Routes,
   Route,
-  Link,
-  Navigate,
 } from "react-router-dom";
 import "./App.css";
 import Home from "./Home/Home";
@@ -14,17 +12,16 @@ import ViewSmoothie from "./ViewSmoothie/View-Smoothie";
 import ViewRecipe from "./ViewRecipe/ViewRecipe";
 import MyRecipes from "./MyRecipes/MyRecipes";
 import CreateRecipe from "./CreateRecipe/CreateRecipe";
-import { useEffect, useState } from "react";
 import PrivateRoute from "./PrivateRoute/PrivateRoute";
 function App() {
-  const userData = JSON.parse(localStorage.getItem("userData")!);
+  // const userData = JSON.parse(localStorage.getItem("userData")!);
   // const isLoggedIn: boolean =
   //   JSON.parse(localStorage.getItem("userData")!) !== null;
 
 
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(
-    () => localStorage.getItem("logged_user") !== null
-  );
+  // const [isLoggedIn, setIsLoggedIn] = useState<boolean>(
+  //   () => localStorage.getItem("logged_user") !== null
+  // );
 
   // useEffect(() => {
   //   localStorage.setItem("logged_user", JSON.stringify(isLoggedIn));

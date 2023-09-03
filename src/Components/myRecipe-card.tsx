@@ -1,5 +1,3 @@
-import React from "react";
-
 import { Link } from "react-router-dom";
 import { FaEdit } from "react-icons/fa";
 import { AiFillDelete } from "react-icons/ai";
@@ -17,7 +15,7 @@ const MyRecipeCard = ({ recipeData, flag, getSmoothie }: any) => {
       "content-type": "application/json",
       authorization: `Bearer ${userData.token}`,
     };
-    const res = await axios.delete(`${prodUrl}/smoothie/${data._id}`, {
+    await axios.delete(`${prodUrl}/smoothie/${data._id}`, {
       headers,
     });
     getSmoothie();
