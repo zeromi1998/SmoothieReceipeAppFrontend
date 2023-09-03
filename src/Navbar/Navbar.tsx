@@ -1,12 +1,12 @@
-import React, { useState } from "react";
+import  { useState } from "react";
 import mainImg from "../assets/main.jpg";
 import { Link } from "react-router-dom";
 import "./styles.css";
 import { FaHamburger, FaArrowRight } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 const Navbar = () => {
   const userData = JSON.parse(localStorage.getItem("userData")!);
-  const navigate = useNavigate();
+  // const _navigate = useNavigate();
   const [showNavbar, setShowNavbar] = useState(false);
   const logoutUser = () => {
     localStorage.clear();
