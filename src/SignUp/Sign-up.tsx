@@ -5,6 +5,8 @@ import "./styles.css";
 import Modal from "react-bootstrap/Modal";
 import { useNavigate } from "react-router-dom";
 import tick from "../assets/tick.png";
+import { prodUrl } from "../constant";
+
 interface userformData {
   name: string;
   email: string;
@@ -46,18 +48,15 @@ const SignUp = () => {
       email: userCred.email,
       password: userCred.password,
     };
-    console.log("this reg data", userData);
 
     try {
-      const res = await axios.post("http://localhost:3000/signup", userData);
-
-      console.log("this is reqistr data", res);
+      const res = await axios.post(`${prodUrl}/signup`, userData);
 
       if (res.data) {
         //e.response.data.errors
         setShow(true);
       }
-    } catch (e:any) {
+    } catch (e: any) {
       setError(e.response.data.errors);
     }
   };

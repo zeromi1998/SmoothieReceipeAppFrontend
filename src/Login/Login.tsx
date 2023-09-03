@@ -4,6 +4,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "./styles.css";
 import { useLocalState } from "../util/useLocalStorage";
+import { prodUrl } from "../constant";
 
 interface userLoginData {
   email: string;
@@ -40,21 +41,18 @@ const Login = () => {
     };
     e.preventDefault();
     try {
-      // console.log("this is login data", loginData);
-      const res = await axios.post("http://localhost:3000/login", loginData);
+      const res = await axios.post(`${prodUrl}/login`, loginData);
 
       localStorage.setItem("userData", JSON.stringify(res.data));
       // localStorage.setItem("jwt", JSON.stringify(res.data.token));
-      setJwt(res.data.token)
+      setJwt(res.data.token);
       if (res.data) {
         navigate("/smoothies");
       }
     } catch (e: any) {
-      console.log("this is error response", e.response.data.errors);
+      console.log("Login  error response", e.response.data.errors);
       setError(e.response.data.errors);
     }
-
-    // console.log("this is log response", res?.errors!);
   };
 
   return (

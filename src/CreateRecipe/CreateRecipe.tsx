@@ -7,6 +7,8 @@ import { Link, useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import LoaderComponentForImg from "../Components/LoaderComponentForImg";
 import sample from "../assets/sample.jpg";
+import { prodUrl } from "../constant";
+
 interface userSmoothiedata {
   name: string;
   ingredients: string;
@@ -19,7 +21,6 @@ const CreateRecipe = () => {
   const [errorDesc, setErrorDesc] = useState("");
   const propsData = location.state;
 
-  console.log("this is propsData", propsData);
   const [smoothieImg, setSmoothieImg] = useState<any>(
     propsData ? propsData.smoothieImg : ""
   );
@@ -51,10 +52,6 @@ const CreateRecipe = () => {
   };
 
   const onSubmitFormData = async (e: any) => {
-    // const formData = new FormData();
-    // formData.append("smoothieImg", smoothieImg);
-    // console.log("this is smoothie Img",smoothieImg,...formData,formData)
-
     const userData = JSON.parse(localStorage.getItem("userData")!);
     e.preventDefault();
 
@@ -76,33 +73,28 @@ const CreateRecipe = () => {
     let res;
     if (propsData) {
       try {
-        res = await axios.patch(
-          `http://localhost:3000/smoothie/${propsData._id}`,
-          data,
-          {
-            headers,
-          }
-        );
+        res = await axios.patch(`${prodUrl}/smoothie/${propsData._id}`, data, {
+          headers,
+        });
         navigate("/myRecipes");
       } catch (error) {
-        console.log("this is edit recipe error  ", error);
+        console.log("Edit Error ", error);
       }
     } else {
       if (desc) {
         try {
-          res = await axios.post("http://localhost:3000/smoothie", data, {
+          res = await axios.post(`${prodUrl}/smoothie`, data, {
             headers,
           });
           navigate("/myRecipes");
         } catch (error) {
-          console.log("this is create recipe error  ", error);
+          console.log("Create recipe Error  ", error);
         }
       } else {
         setErrorDesc("Please add Recipe Steps");
       }
     }
 
-    console.log("this is form data", res);
   };
 
   const uploadImg = async (e: any) => {
@@ -119,7 +111,6 @@ const CreateRecipe = () => {
         formData
       );
 
-      console.log("this is console from cloudiry ", res.data.secure_url);
       setSmoothieImg(res.data.secure_url);
       setLoader(false);
     } catch (error) {

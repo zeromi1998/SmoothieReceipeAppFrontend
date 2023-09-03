@@ -2,6 +2,8 @@ import mango from "../assets/Mango.jpg";
 import "./styles.css";
 import { Link, useLocation } from "react-router-dom";
 import sample from "../assets/sample.jpg";
+import { prodUrl } from "../constant";
+
 const ViewRecipe = () => {
   const location = useLocation();
 
@@ -9,7 +11,6 @@ const ViewRecipe = () => {
 
   const ingrediantsData = propsData.ingredients.split(",");
 
-  console.log("ths is view 1nl user data", propsData, ingrediantsData);
 
   function createMarkup() {
     return { __html: propsData.description };

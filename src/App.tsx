@@ -20,7 +20,7 @@ function App() {
   const userData = JSON.parse(localStorage.getItem("userData")!);
   // const isLoggedIn: boolean =
   //   JSON.parse(localStorage.getItem("userData")!) !== null;
-  console.log("this is localcheck", userData);
+
 
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(
     () => localStorage.getItem("logged_user") !== null

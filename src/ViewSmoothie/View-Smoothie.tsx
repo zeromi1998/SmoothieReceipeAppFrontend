@@ -3,6 +3,7 @@ import axios from "axios";
 import MyRecipeCard from "../Components/myRecipe-card";
 import { useEffect, useState } from "react";
 import LoaderComponent from "../Components/Loader-component";
+import { prodUrl } from "../constant";
 
 const ViewSmoothie = () => {
   const [smoothies, setSmoothies] = useState([]);
@@ -19,7 +20,7 @@ const ViewSmoothie = () => {
         authorization: `Bearer ${userData.token}`,
       };
 
-      const smoothiesData = await axios.get("http://localhost:3000/smoothies", {
+      const smoothiesData = await axios.get(`${prodUrl}/smoothies`, {
         headers,
       });
       if (smoothiesData) {

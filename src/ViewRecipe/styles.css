@@ -67,3 +67,31 @@
 
     text-align: start;
 }
+
+@media (max-width: 800px){
+    .summary-card{
+        font-family: 'circular';
+        padding: 10px;
+        display: block;
+    }
+    .card-recipe img {
+        border-radius: 30%;
+        width: 40%;
+        height: 350px;
+        margin-top: 20px;
+        object-fit: scale-down;
+    }
+    .card-two{
+        margin: 0 40px;
+        text-align: start;
+        color:#474747; ;
+    }
+    .card-one li{
+    font-size: 0.8rem;
+    }
+    .card-two li{
+        font-size: 0.8rem;
+        }
+}
+
+

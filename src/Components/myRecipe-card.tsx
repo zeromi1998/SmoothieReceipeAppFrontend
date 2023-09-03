@@ -5,6 +5,7 @@ import { FaEdit } from "react-icons/fa";
 import { AiFillDelete } from "react-icons/ai";
 import { v4 as uuidv4 } from "uuid";
 import axios from "axios";
+import { prodUrl } from "../constant";
 import sample from "../assets/sample.jpg";
 
 const MyRecipeCard = ({ recipeData, flag, getSmoothie }: any) => {
@@ -16,12 +17,10 @@ const MyRecipeCard = ({ recipeData, flag, getSmoothie }: any) => {
       "content-type": "application/json",
       authorization: `Bearer ${userData.token}`,
     };
-    const res = await axios.delete(
-      `http://localhost:3000/smoothie/${data._id}`,
-      { headers }
-    );
+    const res = await axios.delete(`${prodUrl}/smoothie/${data._id}`, {
+      headers,
+    });
     getSmoothie();
-    console.log("this is delete", res);
   };
   return (
     <>
