@@ -12,7 +12,7 @@ const ViewSmoothie = () => {
   const [hasMore, setHasMore] = useState(true);
   const [range, setRange] = useState(0);
   const dataSize = 2;
-  const [loader, setLoader] = useState(false);
+  const [_loader, setLoader] = useState(false);
   const getSmoothies = async () => {
     setLoader(true);
     const userData = JSON.parse(localStorage.getItem("userData")!);

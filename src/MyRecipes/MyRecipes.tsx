@@ -8,7 +8,7 @@ import { prodUrl } from "../constant";
 import InfiniteScroll from "react-infinite-scroll-component";
 const MyRecipes = () => {
   const [myRecipe, setMyRecipe] = useState<any>([]);
-  const [loader, setLoader] = useState(false);
+  const [_loader, setLoader] = useState(false);
   const [hasMore, setHasMore] = useState(true);
   const [range, setRange] = useState(0);
   const dataSize = 2;
