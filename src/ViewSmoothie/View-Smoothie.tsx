@@ -4,50 +4,78 @@ import MyRecipeCard from "../Components/myRecipe-card";
 import { useEffect, useState } from "react";
 import LoaderComponent from "../Components/Loader-component";
 import { prodUrl } from "../constant";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 const ViewSmoothie = () => {
-  const [smoothies, setSmoothies] = useState([]);
+  const [smoothies, setSmoothies] = useState<any>([]);
 
+  const [hasMore, setHasMore] = useState(true);
+  const [range, setRange] = useState(0);
+  const dataSize = 2;
   const [loader, setLoader] = useState(false);
-  useEffect(() => {
-    const controller = new AbortController();
-    const getSmoothies = async () => {
-      setLoader(true);
-      const userData = JSON.parse(localStorage.getItem("userData")!);
+  const getSmoothies = async () => {
+    setLoader(true);
+    const userData = JSON.parse(localStorage.getItem("userData")!);
 
-      const headers = {
-        "content-type": "application/json",
-        authorization: `Bearer ${userData.token}`,
-      };
-
-      const smoothiesData = await axios.get(`${prodUrl}/smoothies`, {
-        headers,
-      });
-      if (smoothiesData) {
-        setLoader(false);
-      }
-      setSmoothies(smoothiesData.data);
-      console.log("this is smothes data", smoothiesData.data);
-      return () => controller.abort();
+    const headers = {
+      "content-type": "application/json",
+      authorization: `Bearer ${userData.token}`,
     };
+
+    const smoothiesData = await axios.get(
+      `${prodUrl}/smoothies?from=${range}&size=${dataSize}`,
+      {
+        headers,
+      }
+    );
+    if (smoothiesData.data.length > 0) {
+      setLoader(false);
+      setHasMore(true);
+      setSmoothies((preVal: any) => {
+        return [...preVal, ...smoothiesData.data];
+      });
+    } else {
+      setLoader(false);
+      setHasMore(false);
+    }
+
+  };
+  useEffect(() => {
     getSmoothies();
   }, []);
 
+  const fetchData = () => {
+    setRange(range + 2);
+    // setHasMore()
+    getSmoothies();
+  };
   return (
     <>
-      {loader ? (
-        <LoaderComponent />
-      ) : (
-        <div className="main-view">
+      <div className="main-view">
+        <InfiniteScroll
+          dataLength={smoothies.length} //This is important field to render the next data
+          next={fetchData}
+          hasMore={hasMore}
+          loader={<LoaderComponent />}
+          endMessage={
+            <p style={{ textAlign: "center" }}>
+              {smoothies.length > 0 ? <b>Yay! You have seen it all</b> : " "}
+            </p>
+          }
+        >
           {smoothies.length > 0 ? (
             <MyRecipeCard recipeData={smoothies} />
           ) : (
             <div>
-              <h3> No Recipe Found !. Please Create New Recipe </h3>
+              {hasMore ? (
+                ""
+              ) : (
+                <h3>No Recipe Found !. Please Create New Recipe </h3>
+              )}
             </div>
           )}
-        </div>
-      )}
+        </InfiniteScroll>
+      </div>
     </>
   );
 };

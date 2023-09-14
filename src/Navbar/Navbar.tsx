@@ -1,18 +1,20 @@
-import  { useState } from "react";
+import {  useState } from "react";
 import mainImg from "../assets/main.jpg";
 import { Link } from "react-router-dom";
 import "./styles.css";
 import { FaHamburger, FaArrowRight } from "react-icons/fa";
-// import { useNavigate } from "react-router-dom";
+// import { useLocalState } from "../util/useLocalStorage";
+import { useNavigate } from "react-router-dom";
 const Navbar = () => {
+  const [_seed, setSeed] = useState(1);
   const userData = JSON.parse(localStorage.getItem("userData")!);
-  // const _navigate = useNavigate();
+  const navigate = useNavigate();
   const [showNavbar, setShowNavbar] = useState(false);
   const logoutUser = () => {
+    navigate("/login");
     localStorage.clear();
-    // navigate("/signup");
+    setSeed(Math.random());
   };
-
   const handleShowNavbar = () => {
     setShowNavbar(!showNavbar);
   };
@@ -34,7 +36,7 @@ const Navbar = () => {
             <li>
               <Link to="/">Home</Link>
             </li>
-            {!userData?.token ? (
+            {!userData ? (
               <>
                 <li>
                   <Link to="/login">LogIn</Link>
@@ -47,16 +49,16 @@ const Navbar = () => {
               ""
             )}
 
-            {userData?.token ? (
+            {userData ? (
               <>
                 <li>
                   <Link to="/myRecipes">My Recipe</Link>
                 </li>
 
                 <li>
-                  <Link onClick={logoutUser} to="/login">
+                  <p style={{cursor:"pointer",color:"#fff"}} onClick={logoutUser} >
                     Logout
-                  </Link>
+                  </p>
                 </li>
               </>
             ) : (

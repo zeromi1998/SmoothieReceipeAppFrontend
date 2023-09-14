@@ -5,10 +5,13 @@ import { useEffect, useState } from "react";
 import MyRecipeCard from "../Components/myRecipe-card";
 import LoaderComponent from "../Components/Loader-component";
 import { prodUrl } from "../constant";
-
+import InfiniteScroll from "react-infinite-scroll-component";
 const MyRecipes = () => {
-  const [myRecipe, setMyRecipe] = useState([]);
+  const [myRecipe, setMyRecipe] = useState<any>([]);
   const [loader, setLoader] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
+  const [range, setRange] = useState(0);
+  const dataSize = 2;
   useEffect(() => {
     getMyRecipes();
   }, []);
@@ -22,13 +25,27 @@ const MyRecipes = () => {
       authorization: `Bearer ${userData.token}`,
     };
 
-    const res = await axios.get(`${prodUrl}/smoothie`, {
-      headers,
-    });
-    if (res) {
+    const res = await axios.get(
+      `${prodUrl}/smoothie?from=${range}&size=${dataSize}`,
+      {
+        headers,
+      }
+    );
+    if (res.data.length > 0) {
       setLoader(false);
-      setMyRecipe(res.data);
+      setHasMore(true);
+      setMyRecipe((preVal: any) => {
+        return [...preVal, ...res.data];
+      });
+    } else {
+      setHasMore(false);
     }
+  };
+
+  const fetchData = () => {
+    setRange(range + 2);
+    // setHasMore()
+    getMyRecipes();
   };
 
   return (
@@ -36,11 +53,38 @@ const MyRecipes = () => {
       <div className="createRecipe">
         <Link to="/createRecipe">Create New Recipe</Link>
       </div>
-      {loader ? (
-        <LoaderComponent />
-      ) : (
-        <>
+
+      <>
+        <InfiniteScroll
+          dataLength={myRecipe.length} //This is important field to render the next data
+          next={fetchData}
+          hasMore={hasMore}
+          loader={<LoaderComponent />}
+          endMessage={
+            <p style={{ textAlign: "center" }}>
+              {myRecipe.length > 0 ?  <b>Yay! You have seen it all</b> : " "}
+             
+            </p>
+          }
+        >
           {myRecipe.length > 0 ? (
+            <MyRecipeCard
+              recipeData={myRecipe}
+              getSmoothie={getMyRecipes}
+              flag={true}
+            />
+          ) : (
+            <div>
+              {hasMore ? (
+                ""
+              ) : (
+                <h3>No Recipe Found !. Please Create New Recipe </h3>
+              )}
+            </div>
+          )}
+        </InfiniteScroll>
+
+        {/* {myRecipe.length > 0 ? (
             <MyRecipeCard
               recipeData={myRecipe}
               getSmoothie={getMyRecipes}
@@ -50,9 +94,8 @@ const MyRecipes = () => {
             <div>
               <h3>No Recipe Found !. Please Create New Recipe </h3>
             </div>
-          )}
-        </>
-      )}
+          )} */}
+      </>
 
       {/* <div className="myRecipes">
         {myRecipe.map((data:any) => {

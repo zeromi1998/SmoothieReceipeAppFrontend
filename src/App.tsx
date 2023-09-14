@@ -2,6 +2,7 @@ import {
   BrowserRouter as Router,
   Routes,
   Route,
+  Navigate,
 } from "react-router-dom";
 import "./App.css";
 import Home from "./Home/Home";
@@ -15,9 +16,8 @@ import CreateRecipe from "./CreateRecipe/CreateRecipe";
 import PrivateRoute from "./PrivateRoute/PrivateRoute";
 function App() {
   // const userData = JSON.parse(localStorage.getItem("userData")!);
-  // const isLoggedIn: boolean =
-  //   JSON.parse(localStorage.getItem("userData")!) !== null;
-
+  const isLoggedIn: boolean =
+    JSON.parse(localStorage.getItem("userData")!) !== null;
 
   // const [isLoggedIn, setIsLoggedIn] = useState<boolean>(
   //   () => localStorage.getItem("logged_user") !== null
@@ -34,9 +34,15 @@ function App() {
 
         <Routes>
           <Route path="/" element={<Home />}></Route>
-          <Route path="/login" element={<Login />}></Route>
+          <Route
+            path="/login"
+            element={isLoggedIn ? <Navigate to="/smoothies" /> : <Login />}
+          ></Route>
 
-          <Route path="/signup" element={<SignUp />}></Route>
+          <Route
+            path="/signup"
+            element={isLoggedIn ? <Navigate to="/smoothies" /> : <SignUp />}
+          ></Route>
 
           <Route
             path="/smoothies"
